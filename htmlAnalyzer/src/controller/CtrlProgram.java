@@ -1,5 +1,6 @@
 package controller;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.Scanner;
@@ -35,8 +36,10 @@ public class CtrlProgram {
 					System.out.println(html.htmlDataExtractor(url));
 				} catch(URISyntaxException e) {
 					System.out.println("Invalid URL (" + e.getReason() + ").");
-				} catch (IOException e) {
+				} catch(IOException e) {
 					System.out.println("Failed to connect to the URL host (" + html.getHost() + ").");
+				} catch(IllegalArgumentException e) {
+					System.out.println("Couldn't reach the URL (" + e.getMessage() + ").");
 				}
 				break;
 			case 2:
@@ -47,9 +50,9 @@ public class CtrlProgram {
 				try {
 					html.htmlDataDownload(html.htmlDataExtractor(url));
 					System.out.println("File Downloaded");
-				} catch(URISyntaxException e) {
-					e.printStackTrace();
-				} catch(IOException e) {
+				} catch(FileNotFoundException e) {
+					System.out.println("File (" + html.getFilePath() + ") could not be found or can't be written on.");
+				} catch(URISyntaxException | IOException e) {
 					e.printStackTrace();
 				}
 				break;

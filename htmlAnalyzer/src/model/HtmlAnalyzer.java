@@ -13,8 +13,13 @@ import java.nio.file.Paths;
 
 public class HtmlAnalyzer {
 	private String host;
+	private Path htmlDataFilePath;
 	
 	public String htmlDataExtractor(String hyperlink) throws URISyntaxException, IOException {
+		if(hyperlink == null || hyperlink.isBlank()) {
+			throw new IllegalArgumentException("URL must not be empty");
+		}
+		
 		if(!hyperlink.startsWith("http://") && !hyperlink.startsWith("https://")) {
 			hyperlink = "https://" + hyperlink;
 		}
@@ -41,15 +46,18 @@ public class HtmlAnalyzer {
 	
 	public void htmlDataDownload(String htmlData) throws IOException {
 		String userHomePath = System.getProperty("user.home");
-		Path htmlDataFilePath = Paths.get(userHomePath).resolve("Downloads").resolve("HTML Data.txt");
+		htmlDataFilePath = Paths.get(userHomePath).resolve("Downloads").resolve("HTML Data.txt");
 		
 	    try(BufferedWriter writer = new BufferedWriter(new FileWriter(htmlDataFilePath.toString()))) {
 	    	writer.write(htmlData);
 	    }
 	}
 
-	
 	public String getHost() {
 		return host;
+	}
+	
+	public String getFilePath() {
+		return htmlDataFilePath.toString();
 	}
 }
