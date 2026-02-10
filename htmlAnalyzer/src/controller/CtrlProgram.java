@@ -5,7 +5,8 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.Scanner;
 
-import model.HtmlAnalyzer;
+import model.HtmlDownloader;
+import model.HtmlExtractor;
 
 public class CtrlProgram {
 	public static void main(String[] args) {
@@ -14,7 +15,8 @@ public class CtrlProgram {
 		System.out.print("Insert a URL: ");
 		String url = input.nextLine();
 		
-		HtmlAnalyzer html = new HtmlAnalyzer();
+		HtmlExtractor extractor = new HtmlExtractor();
+		HtmlDownloader downloader = new HtmlDownloader();
 		
 		System.out.println("===== SELECT WHAT YOU WANT TO DO =====\n");
 		System.out.println("==> Data Extraction");
@@ -33,37 +35,54 @@ public class CtrlProgram {
 		switch(option) {
 			case 1:
 				try {
-					System.out.println(html.htmlDataExtractor(url));
+					System.out.println(extractor.htmlDataExtractor(url));
 				} catch(URISyntaxException e) {
 					System.out.println("Invalid URL (" + e.getReason() + ").");
 				} catch(IOException e) {
-					System.out.println("Failed to connect to the URL host (" + html.getHost() + ").");
+					System.out.println("Failed to connect to the URL host (" + extractor.getHost() + ").");
 				} catch(IllegalArgumentException e) {
 					System.out.println("Couldn't reach the URL (" + e.getMessage() + ").");
 				}
 				break;
 			case 2:
-				// CODE
+				try {
+					System.out.println(extractor.htmlHeadExtractor(extractor.htmlDataExtractor(url)));
+				} catch(URISyntaxException e) {
+					System.out.println("Invalid URL (" + e.getReason() + ").");
+				} catch(IOException e) {
+					System.out.println("Failed to connect to the URL host (" + extractor.getHost() + ").");
+				} catch(IllegalArgumentException e) {
+					System.out.println("Couldn't reach the URL (" + e.getMessage() + ").");
+				}
+				break;
 			case 3:
 				// CODE
 			case 4:
 				try {
-					html.htmlDataDownload(html.htmlDataExtractor(url));
-					System.out.println("File Downloaded");
+					downloader.htmlDataDownload(extractor.htmlDataExtractor(url));
+					System.out.println("File Downloaded to (" + downloader.getFilePath() + ").");
 				} catch(FileNotFoundException e) {
-					System.out.println("File (" + html.getFilePath() + ") could not be found or can't be written on.");
+					System.out.println("File (" + downloader.getFilePath() + ") could not be found or can't be written on.");
 				} catch(URISyntaxException | IOException e) {
 					e.printStackTrace();
 				}
 				break;
 			case 5:
-				// CODE
+				try {
+					downloader.htmlHeadDownload(extractor.htmlHeadExtractor(extractor.htmlDataExtractor(url)));
+					System.out.println("File Downloaded to (" + downloader.getFilePath() + ").");
+				} catch(FileNotFoundException e) {
+					System.out.println("File (" + downloader.getFilePath() + ") could not be found or can't be written on.");
+				} catch (URISyntaxException | IOException e) {
+					e.printStackTrace();
+				}
+				break;
 			case 6:
 				// CODE
 			case 7:
 				// CODE
 			default:
-				System.out.println("Please type a number between 1 - 9.");
+				System.out.println("Please type a number between 1 - 7.");
 		}
 	}
 }

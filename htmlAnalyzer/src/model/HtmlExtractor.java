@@ -1,19 +1,14 @@
 package model;
 
 import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 
-public class HtmlAnalyzer {
+public class HtmlExtractor {
 	private String host;
-	private Path htmlDataFilePath;
 	
 	public String htmlDataExtractor(String hyperlink) throws URISyntaxException, IOException {
 		if(hyperlink == null || hyperlink.isBlank()) {
@@ -44,20 +39,14 @@ public class HtmlAnalyzer {
 		return htmlBuilder.toString();
 	}
 	
-	public void htmlDataDownload(String htmlData) throws IOException {
-		String userHomePath = System.getProperty("user.home");
-		htmlDataFilePath = Paths.get(userHomePath).resolve("Downloads").resolve("HTML Data.txt");
+	public String htmlHeadExtractor(String htmlData) {
+		int headClosingTag = htmlData.indexOf("</head>");
+		String htmlHead = htmlData.substring(0, headClosingTag + 7);
 		
-	    try(BufferedWriter writer = new BufferedWriter(new FileWriter(htmlDataFilePath.toString()))) {
-	    	writer.write(htmlData);
-	    }
+		return htmlHead;
 	}
 
 	public String getHost() {
 		return host;
-	}
-	
-	public String getFilePath() {
-		return htmlDataFilePath.toString();
 	}
 }
