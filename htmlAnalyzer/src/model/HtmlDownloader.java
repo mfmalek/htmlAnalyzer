@@ -31,6 +31,10 @@ public class HtmlDownloader {
 		fileWriter(data, "HTML Head Data.txt");
 	}
 	
+	public void htmlBodyDownload(String data) throws IOException {
+		fileWriter(data, "HTML Body Data.txt");
+	}
+	
 	public String getFilePath() {
 		return htmlDataFilePath.toString();
 	}

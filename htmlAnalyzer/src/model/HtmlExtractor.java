@@ -40,10 +40,19 @@ public class HtmlExtractor {
 	}
 	
 	public String htmlHeadExtractor(String htmlData) {
+		int headOpeningTag = htmlData.indexOf("<head");
 		int headClosingTag = htmlData.indexOf("</head>");
-		String htmlHead = htmlData.substring(0, headClosingTag + 7);
+		String htmlHead = htmlData.substring(headOpeningTag, headClosingTag + 7);
 		
 		return htmlHead;
+	}
+	
+	public String htmlBodyExtractor(String htmlData) {
+		int bodyOpeningTag = htmlData.indexOf("<body");
+		int bodyClosingTag = htmlData.indexOf("</body>");
+		String htmlBody = htmlData.substring(bodyOpeningTag, bodyClosingTag + 7);
+		
+		return htmlBody;
 	}
 
 	public String getHost() {
