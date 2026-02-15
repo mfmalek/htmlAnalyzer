@@ -5,6 +5,7 @@ import java.util.Deque;
 
 public class HtmlMiscellaneous {
 	private Deque<String> tagsArray = new ArrayDeque<>();
+	private String[] wordsArray;
 	
 	public int bodyTagCounter(String data) {
 		int index = 0;
@@ -81,7 +82,28 @@ public class HtmlMiscellaneous {
 		return tagCounter;
 	}
 	
+	public int bodyWordCounter(String data) {
+		data = data.replaceAll("(?is)<script.*?>.*?</script>", "");
+		data = data.replaceAll("(?is)<style.*?>.*?</style>", "");
+		String text = data.replaceAll("<[^>]+>", " ");
+		text = text.trim().replaceAll("\\s+", " ");
+		wordsArray = text.split(" ");
+
+		return wordsArray.length;
+	}
+	
+	public double htmlSizeCalculator(String data) {
+		byte[] bytes = data.getBytes();
+		double sizeConverterToKB = bytes.length / 1024;
+		
+		return sizeConverterToKB;
+	}
+	
 	public Deque<String> getTags() {
 		return tagsArray;
+	}
+	
+	public String[] getWords() {
+		return wordsArray;
 	}
 }

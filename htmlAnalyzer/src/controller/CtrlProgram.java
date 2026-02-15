@@ -3,6 +3,7 @@ package controller;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URISyntaxException;
+import java.util.Arrays;
 import java.util.Scanner;
 
 import model.HtmlDownloader;
@@ -33,7 +34,7 @@ public class CtrlProgram {
 			System.out.println("==> Miscellaneous");
 			System.out.println("\t7. Body Tag Counter");
 			System.out.println("\t8. Body Word Counter");
-			System.out.println("\t9. HTML Statistics Summary");
+			System.out.println("\t9. HTML Size Calculator");
 			System.out.print("\nChoose which operation you would like to proceed with [type 0 to cancel]: ");
 			option = input.nextInt();
 			System.out.println();
@@ -119,11 +120,20 @@ public class CtrlProgram {
 					}
 					break;
 				case 8:
-					// CODE
-					break;
+					try {
+						System.out.println("Amount of words: " + misc.bodyWordCounter(extractor.htmlBodyExtractor(extractor.htmlDataExtractor(url))));
+						System.out.println("Words in the body: " + Arrays.toString(misc.getWords()));
+					} catch (URISyntaxException | IOException e) {
+						e.printStackTrace();
+					}
+						break;
 				case 9:
-					// CODE [HTML size (KB), Number of tags, Number of links, Number of images]
-					break;
+					try {
+						System.out.printf("HTML Size: ≈%.2f KB\n", misc.htmlSizeCalculator(extractor.htmlDataExtractor(url)));
+					} catch (URISyntaxException | IOException e) {
+						e.printStackTrace();
+					}
+						break;
 				default:
 					System.out.println("Please type a number between 0 - 7.");
 			}
